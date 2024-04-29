@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agreagar album</title>
+    <style>
+        /* Estilos globales */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        /* Estilos del encabezado */
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+        /* Estilos de la barra de navegación */
+        nav {
+            background-color: #444;
+            text-align: center;
+            padding: 0.5rem;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+        /* Estilos del contenido principal */
+        .container {
+            /*max-width: 1200px;*/
+            margin: 30px;
+            padding: 2rem;
+            
+        }
+        /* Estilos del pie de página */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+            width: 100%;
+        }
+        form {
+            width: 100%;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="date"] {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        select {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        input[type="submit"] {
+            background-color: #333c87;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #282f6b;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Mus!c</h1>
+    </header>
+    <nav>
+        <a href="{% url 'albums' %}">Regresar</a>
+    </nav>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="container">
+        <form action="{% url 'agregarAlbum' %}" method="post">
+            {% csrf_token %}
+            <label for="id_artista">Id de artista:</label><br>
+            <input type="number" id="id_artista" name="id_artista" required><br>
+            <label for="fecha_lanzamiento">Fecha de lanzamiento:</label><br>
+            <input type="date" id="fecha_lanzamiento" name="fecha_lanzamiento" required><br>
+            <label for="edicion_especial">Edición especial:</label><br>
+            <select id="edicion_especial" name="edicion_especial" required>
+                <option value="true">Especial</option>
+                <option value="false">Normal</option>
+            </select><br>
+            <label for="titulo">Título:</label><br>
+            <input type="text" id="titulo" name="titulo" required><br>
+            <label for="precio">Precio:</label><br>
+            <input type="number" id="precio" name="precio" min="0.5" step="0.01" required><br>
+            <input type="submit" value="Crear Album">
+        </form>
+    </div>
+    <footer>
+        <p>&copy; 2024 Mus!c</p>
+    </footer>
+</body>
+</html>
