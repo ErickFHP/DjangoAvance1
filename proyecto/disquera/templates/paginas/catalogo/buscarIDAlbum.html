@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar album ID</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos globales */
+        * {
+            box-sizing: border-box;
+            font-family: "Roboto", sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        /* Estilos del encabezado */
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+        /* Estilos de la barra de navegación */
+        nav {
+            background-color: #444;
+            text-align: center;
+            padding: 0.5rem;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+        /* Estilos del contenido principal */
+        .container {
+            /*max-width: 1200px;*/
+            margin: 30px;
+            padding: 2rem;
+            
+        }
+        /* Estilos del pie de página */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+            width: 100%;
+        }
+        form {
+            width: 100%;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="date"] {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        select {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            background-color: #333c87;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #282f6b;
+        }
+        
+        .album-details {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            background-color: #8899b2;
+            margin: 0;
+            padding: 20px;
+        }
+        .details-container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; 
+            width: 60%;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-buttons button {
+            padding: 0.5rem 1rem;
+            margin: 0.5rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #333c87;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .action-buttons button:hover {
+            background-color: #282f6b;
+        }
+
+        .action-buttons button:active {
+            background-color: #1d244f;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Mus!c</h1>
+    </header>
+    <nav>
+        <a href="{% url 'albums' %}">Regresar</a>
+    </nav>
+    {% if messages %}
+        <ul class="messages" style="list-style: none; padding: 0;"> 
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}" style="padding: 10px; margin-bottom: 5px; border: 1px solid #ddd; border-radius: 5px;"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="container">
+        <!-- Primer componente: Formulario para buscar el ID del album -->
+        <form id="search-album" action="{% url 'buscarIDAlbum' %}" method="post">
+            {% csrf_token %}
+            <label for="id_album">ID del Album:</label>
+            <input type="number" id="id_album" name="id_album" min="1" required>
+            <input type="submit" value="Buscar">
+        </form>
+
+        <div class="album-details">
+            <div class="details-container">
+                <form id="album-details" action="{% url 'buscarIDAlbum' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" id="id_album_context" name="id_album_context" value="{{ id_album_context }}">
+                    <label for="titulo">Nombre del Album:</label>
+                    <input type="text" id="titulo" name="titulo" value="{{ titulo }}" required>
+                    <label for="precio">Precio:</label>
+                    <input type="number" id="precio" name="precio" value="{{ precio }}" min="0.01" step="0.01" required>
+                    <label for="edicion_especial">Edición especial:</label><br>
+                    <select id="edicion_especial" name="edicion_especial" value="{{ edicion_especial }}" required>
+                        <option value="true">Especial</option>
+                        <option value="false">Normal</option>
+                    </select><br>
+                    <label for="fecha_lanzamiento">Fecha de lanzamiento:</label><br>
+                    <input type="date" id="fecha_lanzamiento" name="fecha_lanzamiento" value="{{ fecha_lanzamiento }}" required><br>
+                    <div class="action-buttons">
+                        <button id="update-record" type="submit">Actualizar Registro</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Mus!c</p>
+    </footer>
+</body>
+</html>

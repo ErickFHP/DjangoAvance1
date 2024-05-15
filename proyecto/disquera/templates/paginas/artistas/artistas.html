@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block titulo %} Artistas {% endblock %}
+
+{% block contenido %}
+<div style="display: flex;">
+    <!-- Columna de la izquierda -->
+    <div style="flex: 1;">
+        <div class="filter-buttons">
+            <button id="filter-active"><a href="?status=1">Activos</a></button>
+            <button id="filter-inactive"><a href="?status=0">Inactivos</a></button>
+        </div>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Región</th>
+                <th>Estatus</th>
+            </tr>
+            {% for artista in artistas %}
+                <tr class="{{ artista.statusArtist }}">
+                    <td>{{ artista.idArtist }}</td>
+                    <td>{{ artista.nameArtist }}</td>
+                    <td>{{ artista.country }}</td>
+                    <td>{{ artista.statusArtist }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Columna de la derecha -->
+    <div style="width: 40vh; height: 300px; display: flex; justify-content: center; align-items: center;">
+        <div class="action-buttons">
+            <button id="add-button"><a href="{% url 'agregarArtista' %}">Agregar</a></button>
+            <button id="search-button"><a href="{% url 'buscarIDArtista' %}">Busqueda por ID</a></button>
+            <button id="email-button"><a href="{% url 'mandarCorreoArtistas' %}">Información por correo</a></button>
+        </div>
+    </div>
+    
+</div>
+
+<script>
+    const filterActiveButton = document.getElementById('filter-active');
+    const filterInactiveButton = document.getElementById('filter-inactive');
+    const artistRows = document.querySelectorAll('table tr:not(:first-child)');
+
+    filterActiveButton.addEventListener('click', () => {
+        filterArtists('Activo');
+    });
+
+    filterInactiveButton.addEventListener('click', () => {
+        filterArtists('Inactivo');
+    });
+
+    function filterArtists(status) {
+        artistRows.forEach(row => {
+            if (row.classList.contains(status)) {
+                row.style.display = 'table-row';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portada Mus!c</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: "Roboto", sans-serif;
+        }
+        body, html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        div {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background-color: #333;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #333;
+        }
+        header h1 {
+            color: #fff;
+            font-size: 100px;
+        }
+        .boton-entrar {
+            margin-top: 20px; 
+            padding: 10px 20px; 
+            font-size: 16px; 
+            text-decoration: none; 
+            color: white; 
+            background-color: #333c87; 
+            border: none;
+            border-radius: 5px; 
+            cursor: pointer;
+        }
+        .boton-entrar a {
+            color: #fff; 
+            text-decoration: none; 
+            display: block; 
+            height: 100%; 
+            width: 100%; 
+            line-height: inherit; /* Hereda la altura de línea del botón */
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <header>
+            <img src="{% static 'Mus!c.png' %}" alt="Logo de Mus!c" width="400">
+            <h1>Mus!c</h1>
+        </header>
+        <button class="boton-entrar"><a href="{% url 'index' %}">Entrar</a></button>
+    </div>
+</body>
+</html>
